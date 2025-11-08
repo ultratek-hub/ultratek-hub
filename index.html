@@ -27,7 +27,6 @@
       <li><a href="print.html">🖨️ Print</a></li>
       <li><a href="reservations.html">🎟️ Reserve</a></li>
       <li><a href="rewards.html">🎁 Rewards</a></li>
-      <li><a href="pricing.html">💸 Pricing</a></li>
     </ul>
   </nav>
 
@@ -37,7 +36,7 @@
     <p>Modular gaming, immersive zones, and practical services—right outside FUTA Northgate.</p>
   </section>
 
-  <!-- 🧭 Zone Navigation -->
+  <!-- 🧭 Zone Grid -->
   <section class="zone-grid">
     <a href="console.html">🎮 Console Zone</a>
     <a href="pc-lan.html">💻 PC LAN</a>
@@ -51,29 +50,45 @@
     <a href="rewards.html">🎁 Loyalty Rewards</a>
   </section>
 
-  <!-- 💸 Zone-Specific Pricing -->
-  <section class="zone-pricing">
-    <h2>💸 Zone-Specific Pricing</h2>
-    <details><summary>💻 PC Gaming</summary><ul><li>₦500/hr</li><li>₦1,200 for 3 hrs</li><li>₦4,000 for 12 hrs</li></ul></details>
-    <details><summary>🎮 Console Gaming</summary><ul><li>₦600/hr</li><li>2 players for ₦1,000/hr</li><li>Weekend Tournament: ₦1,500/player</li></ul></details>
-    <details><summary>🕶️ VR Booth</summary><ul><li>₦500 for 20 mins</li><li>Group of 4: ₦1,800</li></ul></details>
-    <details><summary>🎱 Pool Table</summary><ul><li>₦200/game</li><li>Mini Tournament: ₦500 entry</li></ul></details>
-    <details><summary>🖨️ Print & Photocopy</summary><ul><li>₦30/page</li><li>₦250 for 10 pages</li></ul></details>
-    <details><summary>🍔 Snacks & Bundles</summary><ul><li>Standard: ₦200–₦400</li><li>Gamer Pack: ₦900</li><li>Duo Pack: ₦2,000</li></ul></details>
-    <p><a href="pricing.html">View full pricing strategy →</a></p>
+  <!-- 💸 Embedded Zone Pricing Toggles -->
+  <section class="zone-toggle">
+    <h2>💻 PC Gaming Pricing</h2>
+    <div class="toggle-buttons" data-zone="pc">
+      <button data-toggle="standard">Standard</button>
+      <button data-toggle="bulk">Bulk Packs</button>
+      <button data-toggle="membership">Membership</button>
+    </div>
+    <div class="pricing-content" id="pc-pricing"></div>
   </section>
 
-  <!-- 💸 Dynamic Pricing Toggle -->
-  <section class="pricing-toggle">
-    <h2>💸 Explore Pricing Options</h2>
-    <div class="toggle-buttons">
-      <button data-toggle="standard">Standard Rates</button>
-      <button data-toggle="bulk">Bulk Packs</button>
-      <button data-toggle="events">Tournaments & Events</button>
-      <button data-toggle="bundles">Snack Bundles</button>
-      <button data-toggle="memberships">Memberships</button>
+  <section class="zone-toggle">
+    <h2>🎮 Console Pricing</h2>
+    <div class="toggle-buttons" data-zone="console">
+      <button data-toggle="standard">Standard</button>
+      <button data-toggle="bulk">Tournaments</button>
+      <button data-toggle="membership">Membership</button>
     </div>
-    <div id="pricing-content" class="pricing-content"></div>
+    <div class="pricing-content" id="console-pricing"></div>
+  </section>
+
+  <section class="zone-toggle">
+    <h2>🕶️ VR Pricing</h2>
+    <div class="toggle-buttons" data-zone="vr">
+      <button data-toggle="standard">Standard</button>
+      <button data-toggle="bulk">Group Pack</button>
+      <button data-toggle="membership">Membership</button>
+    </div>
+    <div class="pricing-content" id="vr-pricing"></div>
+  </section>
+
+  <section class="zone-toggle">
+    <h2>🎱 Pool Pricing</h2>
+    <div class="toggle-buttons" data-zone="pool">
+      <button data-toggle="standard">Standard</button>
+      <button data-toggle="bulk">Tournaments</button>
+      <button data-toggle="membership">Membership</button>
+    </div>
+    <div class="pricing-content" id="pool-pricing"></div>
   </section>
 
   <!-- 🎒 Student Bundles -->
@@ -119,25 +134,44 @@
       if (link.getAttribute("href") === currentPage) link.classList.add("active");
     });
 
-    // 💸 Dynamic Pricing Toggle
-    const pricingData = {
-      standard: `<ul><li>PC: ₦500/hr</li><li>Console: ₦600/hr</li><li>VR: ₦500/20 mins</li><li>Pool: ₦200/game</li><li>Print: ₦30/page</li></ul>`,
-      bulk: `<ul><li>PC: ₦1,200 for 3 hrs | ₦4,000 for 12 hrs</li><li>Print: ₦250 for 10 pages</li></ul>`,
-      events: `<ul><li>FIFA Tournament: ₦1,500/player</li><li>Pool Tourney: ₦500 entry</li><li>Scrabble/Chess League: ₦1,000 entry</li><li>LAN Party: CoD/Fortnite</li></ul>`,
-      bundles: `<ul><li>Gamer Pack: ₦900</li><li>Duo Pack: ₦2,000</li></ul>`,
-      memberships: `<ul><li>Silver: ₦5,000/month</li><li>Gold: ₦10,000/month</li><li>VIP Neon Pass: ₦20,000/month</li></ul>`
+    // 💸 Zone Pricing Toggles
+    const zonePricing = {
+      pc: {
+        standard: `<ul><li>₦500/hr</li></ul>`,
+        bulk: `<ul><li>₦1,200 for 3 hrs</li><li>₦4,000 for 12 hrs (valid 1 week)</li></ul>`,
+        membership: `<ul><li>Silver: 15 hrs/month</li><li>Gold: 35 hrs/month</li><li>VIP: Unlimited</li></ul>`
+      },
+      console: {
+        standard: `<ul><li>₦600/hr</li><li>2 players: ₦1,000/hr</li></ul>`,
+        bulk: `<ul><li>Weekend Tournament: ₦1,500/player</li></ul>`,
+        membership: `<ul><li>Gold: 3 hrs/month</li><li>VIP: 10 hrs/month</li></ul>`
+      },
+      vr: {
+        standard: `<ul><li>₦500 for 20 mins</li></ul>`,
+        bulk: `<ul><li>Group of 4: ₦1,800</li></ul>`,
+        membership: `<ul><li>Gold: 1 session/month</li><li>VIP: Discounted sessions</li></ul>`
+      },
+      pool: {
+        standard: `<ul><li>₦200/game</li></ul>`,
+        bulk: `<ul><li>Mini Tournament: ₦500 entry</li></ul>`,
+        membership: `<ul><li>Silver: 1 free game</li></ul>`
+      }
     };
-    const pricingButtons = document.querySelectorAll(".toggle-buttons button");
-    const pricingContent = document.getElementById("pricing-content");
-    pricingButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const key = btn.getAttribute("data-toggle");
-        pricingContent.innerHTML = pricingData[key];
+
+    document.querySelectorAll(".toggle-buttons").forEach(group => {
+      const zone = group.getAttribute("data-zone");
+      const output = document.getElementById(`${zone}-pricing`);
+      group.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-toggle");
+          output.innerHTML = zonePricing[zone][key];
+        });
       });
+      output.innerHTML = zonePricing[zone].standard;
     });
-    pricingContent.innerHTML = pricingData.standard;
 
     // 🎒 Student Bundle Selector
     const bundleData = {
-      gamer: `<ul><li>1 drink</li><li>1 noodles</li><li>1 hr PC</li><li class="savings">₦900 (save ₦100)</li></ul>`,
-      duo: `<ul><li>2 drinks</li><li>2 snacks</li><li>2 hrs console</li><li class="savings">₦
+      gamer: `<ul><li>1 drink</li><li>1 noodles</li><li>1 hr PC</li><li class="savings">₦900</li></ul>`,
+      duo: `<ul><li>2 drinks</li><li>2 snacks</li><li>2 hrs console</li><li class="savings">₦2,000</li></ul>`,
+      print: `<ul><li>10 pages printing</li><li class
